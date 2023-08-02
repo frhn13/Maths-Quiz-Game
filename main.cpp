@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include <vector>
 #include "gameFunctions.h"
 
 int main() {
@@ -27,6 +28,13 @@ int main() {
         do_subtraction = choosingOperators("subtraction");
         do_multiplication = choosingOperators("multiplication");
         do_division = choosingOperators("division");
+    }
+    std::vector<Questions>quizQuestions = generateQuiz(do_addition, do_subtraction, do_multiplication, do_division, questions);
+    for (Questions question : quizQuestions) {
+        std::cout << question.getQuestion();
+        std::cout << "\n";
+        std::cout << question.getAnswer();
+        std::cout << "\n";
     }
     return 0;
 }
