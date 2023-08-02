@@ -9,6 +9,8 @@ int main() {
     bool do_subtraction;
     bool do_multiplication;
     bool do_division;
+    int score = 0;
+    int player_answer;
     std::cout <<"===============================\n";
     std::cout << "Welcome to this Maths game\n";
     std::cout << "==============================\n";
@@ -30,11 +32,23 @@ int main() {
         do_division = choosingOperators("division");
     }
     std::vector<Questions>quizQuestions = generateQuiz(do_addition, do_subtraction, do_multiplication, do_division, questions);
-    for (Questions question : quizQuestions) {
-        std::cout << question.getQuestion();
-        std::cout << "\n";
-        std::cout << question.getAnswer();
-        std::cout << "\n";
+    for (int x=0; x<quizQuestions.size(); x++) {
+        std::cout << quizQuestions[x].getQuestion();
+        std::cin >> player_answer;
+        while (std::cin.fail()) {
+            std::cout << "Input was invalid, please try again.\n\n";
+            std::cout << quizQuestions[x].getQuestion();
+            std::cin.clear();
+            std::cin.ignore(256,'\n');
+            std::cin >> player_answer;
+        }
+        if (player_answer == quizQuestions[x].getAnswer()) {
+            score++;
+            std::cout << "Well done!\n";
+        }
+        else
+            std::cout << "You are wrong, the correct answer was: " << quizQuestions[x].getAnswer() << "\n";
     }
+    std::cout << "Final Score: " << score << "/" << questions;
     return 0;
 }

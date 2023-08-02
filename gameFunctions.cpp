@@ -5,10 +5,10 @@
 #include <vector>
 #include "gameFunctions.h"
 
-Questions::Questions(std::string question, int answer, int multipleChoice[4]) {
+Questions::Questions(std::string question, int answer, std::vector<int> multipleChoices) {
     this->question = question;
     this->answer = answer;
-    this->multipleChoice[4] = multipleChoice[4];
+    this->multipleChoices = multipleChoices;
 }
 
 std::string Questions::getQuestion() {
@@ -19,8 +19,8 @@ int Questions::getAnswer() {
     return answer;
 }
 
-int * Questions::getChoices() {
-    return multipleChoice;
+std::vector<int> Questions::getChoices() {
+    return multipleChoices;
 }
 
 bool choosingOperators(std::string op) {
@@ -54,6 +54,7 @@ std::vector<Questions> generateQuiz(bool do_addition, bool do_subtraction, bool 
     int answer;
     std::string question_asked;
     std::vector<Questions> quizQuestions;
+    int noChoices = 4;
     srand(time(NULL));
     for (int x=0; x<questions;) {
         operation_chosen = rand() % 4;
@@ -63,10 +64,10 @@ std::vector<Questions> generateQuiz(bool do_addition, bool do_subtraction, bool 
                     num1 = (rand() % 200) + 1;
                     num2 = (rand() % 200) + 1;
                     answer = num1 + num2;
-                    int multipleChoices[4];
                     choice_chosen = rand() % 4;
-                    for (int y=0; y<sizeof(multipleChoices)/sizeof(multipleChoices[0]); y++) {
-                        multipleChoices[y] = (rand() % 400) + 1;
+                    std::vector<int> multipleChoices;
+                    for (int y=0; y<noChoices; y++) {
+                        multipleChoices.push_back((rand() % 400) + 1);
                     }
                     multipleChoices[choice_chosen] = answer;
                     question_asked = "What is " + std::to_string(num1) + " + " + std::to_string(num2) + "?";
@@ -80,10 +81,10 @@ std::vector<Questions> generateQuiz(bool do_addition, bool do_subtraction, bool 
                     num1 = (rand() % 200) + 1;
                     num2 = (rand() % 200) + 1;
                     answer = num1 - num2;
-                    int multipleChoices[4];
                     choice_chosen = rand() % 4;
-                    for (int y=0; y<sizeof(multipleChoices)/sizeof(multipleChoices[0]); y++) {
-                        multipleChoices[y] = (rand() % 400) + 1;
+                    std::vector<int> multipleChoices;
+                    for (int y=0; y<noChoices; y++) {
+                        multipleChoices.push_back((rand() % 400) + 1);
                     }
                     multipleChoices[choice_chosen] = answer;
                     question_asked = "What is " + std::to_string(num1) + " - " + std::to_string(num2) + "?";
@@ -97,10 +98,10 @@ std::vector<Questions> generateQuiz(bool do_addition, bool do_subtraction, bool 
                     num1 = (rand() % 20) + 1;
                     num2 = (rand() % 20) + 1;
                     answer = num1 * num2;
-                    int multipleChoices[4];
                     choice_chosen = rand() % 4;
-                    for (int y=0; y<sizeof(multipleChoices)/sizeof(multipleChoices[0]); y++) {
-                        multipleChoices[y] = (rand() % 400) + 1;
+                    std::vector<int> multipleChoices;
+                    for (int y=0; y<noChoices; y++) {
+                        multipleChoices.push_back((rand() % 400) + 1);
                     }
                     multipleChoices[choice_chosen] = answer;
                     question_asked = "What is " + std::to_string(num1) + " * " + std::to_string(num2) + "?";
@@ -116,13 +117,13 @@ std::vector<Questions> generateQuiz(bool do_addition, bool do_subtraction, bool 
                         num2 = (rand() % 20) + 1;
                     } while (num1 % num2 != 0);
                     answer = num1 / num2;
-                    int multipleChoices[4];
+                    std::vector<int> multipleChoices;
                     choice_chosen = rand() % 4;
-                    for (int y=0; y<sizeof(multipleChoices)/sizeof(multipleChoices[0]); y++) {
-                        multipleChoices[y] = (rand() % 100) + 1;
+                    for (int y=0; y<noChoices; y++) {
+                        multipleChoices.push_back((rand() % 100) + 1);
                     }
                     multipleChoices[choice_chosen] = answer;
-                    question_asked = "What is " + std::to_string(num1) + " / " + std::to_string(num2) + "?";
+                    question_asked = "What is " + std::to_string(num1) + " / " + std::to_string(num2) + ": ";
                     Questions question(question_asked, answer, multipleChoices);
                     quizQuestions.push_back(question);
                     x++;

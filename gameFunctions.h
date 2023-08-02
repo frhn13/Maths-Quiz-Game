@@ -5,12 +5,12 @@ class Questions {
     private:
         std::string question;
         int answer;
-        int multipleChoice[4];
+        std::vector<int> multipleChoices;
     public:
-    Questions(std::string question, int answer, int multipleChoice[4]);
+    Questions(std::string question, int answer, std::vector<int> multipleChoices);
     std::string getQuestion();
     int getAnswer();
-    int * getChoices();
+    std::vector<int> getChoices();
 };
 
 bool choosingOperators(std::string op);
