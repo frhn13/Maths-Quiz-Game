@@ -15,7 +15,7 @@ std::string Questions::getQuestion() {
     return question;
 }
 
-int Questions::getAnswer() {
+int Questions::getAnswer() const {
     return answer;
 }
 
@@ -104,7 +104,7 @@ std::vector<Questions> generateQuiz(bool do_addition, bool do_subtraction, bool 
                         multipleChoices.push_back((rand() % 400) + 1);
                     }
                     multipleChoices[choice_chosen] = answer;
-                    question_asked = "What is " + std::to_string(num1) + " * " + std::to_string(num2) + "? ";
+                    question_asked = "What is " + std::to_string(num1) + " * " + std::to_string(num2) + "?";
                     Questions question(question_asked, answer, multipleChoices);
                     quizQuestions.push_back(question);
                     x++;

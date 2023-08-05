@@ -9,7 +9,7 @@ class Questions {
     public:
     Questions(std::string question, int answer, std::vector<int> multipleChoices);
     std::string getQuestion();
-    int getAnswer();
+    int getAnswer() const;
     std::vector<int> getChoices();
 };
 
