@@ -3,6 +3,7 @@
 #include <ctime>
 #include <string>
 #include <vector>
+#include <fstream>
 #include "gameFunctions.h"
 
 Questions::Questions(std::string question, int answer, std::vector<int> multipleChoices) {
@@ -132,4 +133,15 @@ std::vector<Questions> generateQuiz(bool do_addition, bool do_subtraction, bool 
         }
     }
     return quizQuestions;
+}
+
+void saveScore(std::string username, double percentage) {
+    std::ofstream username_file;
+    std::ofstream scores_file;
+    username_file.open("usernames.txt", std::ios::app);
+    username_file << username << std::endl;
+    username_file.close();
+    scores_file.open("scores.txt", std::ios::app);
+    scores_file << percentage << std::endl;
+    scores_file.close();
 }
