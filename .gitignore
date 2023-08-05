@@ -1,2 +1,5 @@
 main.exe
 quizGame.exe
+/.idea/
+/cmake-build-debug/
+cmakelists.txt
