@@ -24,9 +24,10 @@ class Score {
         std::string getPercentage();
 };
 
-bool choosingOperators(std::string op);
+bool choosingOperators(std::string op, int * no_operators);
 
 std::vector<Questions> generateQuiz(bool do_addition, bool do_subtraction, bool do_multiplication, bool do_division, int questions);
+int playQuiz(std::vector<Questions> quizQuestions, bool isMultipleChoice);
 void saveScore(std::string username, double percentage);
 std::vector<Score> viewScores(bool sort_scores);
 

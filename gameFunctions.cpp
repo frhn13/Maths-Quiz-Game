@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <cmath>
 #include "gameFunctions.h"
 
 Questions::Questions(std::string question, int answer, std::vector<int> multipleChoices) {
@@ -40,7 +41,7 @@ std::string Score::getPercentage() {
     return percentage;
 }
 
-bool choosingOperators(std::string op) {
+bool choosingOperators(std::string op, int * no_operators) {
     bool inputValidation;
     bool do_operation;
     std::string input_operator;
@@ -50,6 +51,7 @@ bool choosingOperators(std::string op) {
         if (strcasecmp(input_operator.c_str(), "Yes") == 0) {
             do_operation = true;
             inputValidation = true;
+            (*no_operators)++;
         }
         else if (strcasecmp(input_operator.c_str(), "No") == 0) {
             do_operation = false;
@@ -69,9 +71,9 @@ std::vector<Questions> generateQuiz(bool do_addition, bool do_subtraction, bool 
     int num1;
     int num2;
     int answer;
+    int noChoices = 4;
     std::string question_asked;
     std::vector<Questions> quizQuestions;
-    int noChoices = 4;
     srand(time(NULL));
     for (int x=0; x<questions;) {
         operation_chosen = rand() % 4;
@@ -151,6 +153,38 @@ std::vector<Questions> generateQuiz(bool do_addition, bool do_subtraction, bool 
     return quizQuestions;
 }
 
+int playQuiz(std::vector<Questions> quizQuestions, bool isMultipleChoice) {
+    int player_answer;
+    int score = 0;
+     for (int x = 0; x < quizQuestions.size(); x++) {
+            std::cout << quizQuestions[x].getQuestion() << '\n';
+            if (isMultipleChoice) {
+                for (int y = 0; y < quizQuestions[x].getChoices().size(); y++) {
+                    std::cout << "Choice " << y + 1 << ": " << quizQuestions[x].getChoices()[y] << "\n";
+                }
+            }
+            std::cin >> player_answer;
+            while (std::cin.fail()) {
+                std::cout << "Input was invalid, please try again.\n\n";
+                std::cout << quizQuestions[x].getQuestion() << "\n";
+                if (isMultipleChoice) {
+                    for (int y = 0; y < quizQuestions[x].getChoices().size(); y++) {
+                        std::cout << "Choice " << y + 1 << ": " << quizQuestions[x].getChoices()[y] << "\n";
+                    }
+                }
+                std::cin.clear();
+                std::cin.ignore(256, '\n');
+                std::cin >> player_answer;
+            }
+            if (player_answer == quizQuestions[x].getAnswer() || (isMultipleChoice && quizQuestions[x].getChoices()[player_answer-1] == quizQuestions[x].getAnswer())) {
+                score++;
+                std::cout << "Well done!\n";
+            } else
+                std::cout << "You are wrong, the correct answer was: " << quizQuestions[x].getAnswer() << "\n";
+        }
+    return score;
+}
+
 void saveScore(std::string username, double percentage) {
     std::ofstream username_file;
     std::ofstream scores_file;
@@ -190,11 +224,14 @@ std::vector<Score> viewScores(bool sort_scores) {
         fullDetails.push_back(score);
     }
     if (sort_scores) {
-        for (int y=0; y<fullDetails.size()-1; y++) {
-            if (fullDetails[y].getPercentage() > fullDetails[y+1].getPercentage()) {
-                temp_score = fullDetails[y];
-                fullDetails[y] = fullDetails[y+1];
-                fullDetails[y+1] = temp_score;
+        for (int x=0; x<fullDetails.size()-1; x++) {
+            for (int y=0; y<fullDetails.size()-1; y++) {
+                std::cout << stod(fullDetails[y].getPercentage()) << "\n";
+                if (stod(fullDetails[y].getPercentage()) < stod(fullDetails[y+1].getPercentage())) {
+                    temp_score = fullDetails[y];
+                    fullDetails[y] = fullDetails[y+1];
+                    fullDetails[y+1] = temp_score;
+                }
             }
         }
     }
