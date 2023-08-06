@@ -3,3 +3,5 @@ quizGame.exe
 /.idea/
 /cmake-build-debug/
 cmakelists.txt
+scores.txt
+usernames.txt

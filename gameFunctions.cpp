@@ -24,6 +24,22 @@ std::vector<int> Questions::getChoices() {
     return multipleChoices;
 }
 
+Score::Score(std::string username, std::string percentage) {
+    this->username = username;
+    this->percentage = percentage;
+}
+
+Score::Score() {
+}
+
+std::string Score::getUsername() {
+    return username;
+}
+
+std::string Score::getPercentage() {
+    return percentage;
+}
+
 bool choosingOperators(std::string op) {
     bool inputValidation;
     bool do_operation;
@@ -144,4 +160,43 @@ void saveScore(std::string username, double percentage) {
     scores_file.open("scores.txt", std::ios::app);
     scores_file << percentage << std::endl;
     scores_file.close();
+}
+
+std::vector<Score> viewScores(bool sort_scores) {
+    std::string username_input;
+    std::string score_input;
+    std::ifstream username_file("usernames.txt");
+    std::ifstream scores_file("scores.txt");
+    std::vector<std::string> usernames;
+    std::vector<std::string> scores;
+    std::vector<Score> fullDetails;
+    Score temp_score;
+
+    if (username_file.is_open()) {
+        while(username_file >> username_input) {
+            usernames.push_back(username_input);
+        }
+    }
+    else {
+        std::cout << "File empty\n";
+    }
+    if (scores_file.is_open()) {
+        while(scores_file >> score_input) {
+            scores.push_back(score_input);
+        }
+    }
+    for (int x=0; x<usernames.size(); x++) {
+        Score score = Score(usernames[x], scores[x]);
+        fullDetails.push_back(score);
+    }
+    if (sort_scores) {
+        for (int y=0; y<fullDetails.size()-1; y++) {
+            if (fullDetails[y].getPercentage() > fullDetails[y+1].getPercentage()) {
+                temp_score = fullDetails[y];
+                fullDetails[y] = fullDetails[y+1];
+                fullDetails[y+1] = temp_score;
+            }
+        }
+    }
+    return fullDetails;
 }
